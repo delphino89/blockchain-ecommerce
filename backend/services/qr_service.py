@@ -1,5 +1,5 @@
 ﻿"""
-qr_service.py - Génération de QR codes
+qr_service.py - Génération de QR codes (version légère)
 """
 
 import qrcode
@@ -21,7 +21,6 @@ class QRService:
             'timestamp': transaction_data.get('timestamp')
         }
         
-        # Créer le QR code
         qr = qrcode.QRCode(
             version=1,
             box_size=10,
@@ -30,10 +29,8 @@ class QRService:
         qr.add_data(json.dumps(qr_data, indent=2))
         qr.make(fit=True)
         
-        # Générer l'image
         img = qr.make_image(fill_color="black", back_color="white")
         
-        # Convertir en base64 pour l'affichage web
         buffered = BytesIO()
         img.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode()
