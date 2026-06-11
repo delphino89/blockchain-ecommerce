@@ -4,11 +4,18 @@ let currentWallet = null;
 let currentWalletName = null;
 
 // Initialisation
-// Initialisation - Sans sauvegarde automatique
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🔐 Application démarrée');
-    // Ne pas charger automatiquement d'ancienne session
-    // L'utilisateur doit se connecter manuellement
+    
+    // Vérifier si un utilisateur est déjà connecté (session)
+    const savedWallet = localStorage.getItem('blockchain_wallet');
+    const savedName = localStorage.getItem('blockchain_name');
+    
+    if (savedWallet && savedName) {
+        currentWallet = savedWallet;
+        currentWalletName = savedName;
+        loadMainApp();
+    }
 });
 
 // Afficher l'onglet actif
@@ -61,8 +68,8 @@ async function login() {
             currentWalletName = result.name;
             
             // Sauvegarder dans localStorage
-            sessionStorage.setItem('blockchain_wallet', currentWallet);
-            sessionStorage.setItem('blockchain_name', currentWalletName);
+            localStorage.setItem('blockchain_wallet', currentWallet);
+            localStorage.setItem('blockchain_name', currentWalletName);
             
             alert(result.message);
             loadMainApp();
@@ -112,8 +119,8 @@ async function register() {
             currentWalletName = result.name;
             
             // Sauvegarder dans localStorage
-            sessionStorage.setItem('blockchain_wallet', currentWallet);
-            sessionStorage.setItem('blockchain_name', currentWalletName);
+            localStorage.setItem('blockchain_wallet', currentWallet);
+            localStorage.setItem('blockchain_name', currentWalletName);
             
             alert(result.message);
             loadMainApp();
@@ -128,8 +135,8 @@ async function register() {
 
 // Déconnexion
 function logout() {
-    sessionStorage.removeItem('blockchain_wallet');
-    sessionStorage.removeItem('blockchain_name');
+    localStorage.removeItem('blockchain_wallet');
+    localStorage.removeItem('blockchain_name');
     currentWallet = null;
     currentWalletName = null;
     
@@ -227,6 +234,7 @@ async function loadMainApp() {
     await updateBlockchainInfo();
     await loadTransactions();
     await loadUsers();
+    await updateDashboard();
     
     // Rafraîchir périodiquement
     setInterval(() => {
@@ -234,6 +242,7 @@ async function loadMainApp() {
             updateBalance();
             updateBlockchainInfo();
             loadUsers();
+            updateDashboard();
         }
     }, 5000);
 }
@@ -493,7 +502,59 @@ async function loadUsers() {
         console.error('Erreur chargement utilisateurs:', error);
     }
 }
-
+// Mettre à jour le tableau de bord
+async function updateDashboard() {
+    try {
+        // Récupérer les transactions
+        const txResponse = await fetch('/api/transactions');
+        const transactions = await txResponse.json();
+        
+        // Récupérer les utilisateurs
+        const usersResponse = await fetch('/api/wallet/list');
+        const users = await usersResponse.json();
+        
+        // Récupérer les produits
+        const productsResponse = await fetch('/api/products');
+        const products = await productsResponse.json();
+        
+        // Récupérer les infos blockchain
+        const blockchainResponse = await fetch('/api/blockchain/info');
+        const blockchain = await blockchainResponse.json();
+        
+        // Mettre à jour les chiffres
+        const totalTxElem = document.getElementById('totalTransactions');
+        const totalUsersElem = document.getElementById('totalUsers');
+        const totalProductsElem = document.getElementById('totalProducts');
+        const totalBlocksElem = document.getElementById('totalBlocks');
+        
+        if (totalTxElem) totalTxElem.textContent = transactions.length;
+        if (totalUsersElem) totalUsersElem.textContent = users.length;
+        if (totalProductsElem) totalProductsElem.textContent = products.length;
+        if (totalBlocksElem) totalBlocksElem.textContent = blockchain.length;
+        
+        // Top 5 des plus riches
+        const topUsers = [...users].sort((a, b) => b.balance - a.balance).slice(0, 5);
+        const topUsersList = document.getElementById('topUsersList');
+        
+        if (topUsersList) {
+            if (topUsers.length === 0) {
+                topUsersList.innerHTML = '<div class="loading">Aucun utilisateur pour le moment</div>';
+            } else {
+                topUsersList.innerHTML = topUsers.map((user, index) => {
+                    let medal = '';
+                    if (index === 0) medal = '🥇 ';
+                    else if (index === 1) medal = '🥈 ';
+                    else if (index === 2) medal = '🥉 ';
+                    else medal = `${index + 1}. `;
+                    return `<div class="user-item"><span>${medal} ${user.name}</span><span class="user-balance">💰 ${user.balance} tokens</span></div>`;
+                }).join('');
+            }
+        }
+        
+    } catch (error) {
+        console.error('Erreur dashboard:', error);
+    }
+}
 // Ajouter un produit
 async function addProduct(event) {
     event.preventDefault();
