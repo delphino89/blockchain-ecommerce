@@ -10,9 +10,6 @@ from time import time
 import uuid
 import hashlib
 
-# Ajouter l'import du module storage
-from storage import save_data, load_data
-
 # Ajouter le chemin pour les imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
