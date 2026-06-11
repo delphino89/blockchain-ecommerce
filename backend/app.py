@@ -10,6 +10,9 @@ from time import time
 import uuid
 import hashlib
 
+# Ajouter l'import du module storage
+from storage import save_data, load_data
+
 # Ajouter le chemin pour les imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -28,9 +31,11 @@ blockchain = Blockchain()
 # Stockage des produits
 products = []
 
-# Stockage des wallets avec mots de passe
-# Format: {address: {'name': nom, 'password_hash': hash, 'created_at': timestamp}}
+# Stockage des wallets
 wallets = {}
+
+# Charger les données sauvegardées
+load_data(wallets, products, blockchain)
 
 def hash_password(password):
     """Hash un mot de passe avec SHA-256"""
@@ -98,6 +103,8 @@ def register_wallet():
     
     print(f"👤 Nouveau wallet créé: {user_name} ({address})")
     
+    save_data(wallets, products, blockchain)
+
     return jsonify({
         'success': True,
         'address': address,
@@ -196,6 +203,8 @@ def change_password():
     # Changer le mot de passe
     wallets[address]['password_hash'] = hash_password(new_password)
     
+    save_data(wallets, products, blockchain)
+
     return jsonify({
         'success': True,
         'message': 'Mot de passe changé avec succès !'
@@ -232,7 +241,7 @@ def add_product():
     products.append(product)
     seller_name = wallets[seller_address]['name']
     print(f"📦 Produit ajouté: {product.name} par {seller_name} (prix: {product.price} tokens)")
-    
+    save_data(wallets, products, blockchain)
     return jsonify(product.to_dict())
 
 @app.route('/api/purchase', methods=['POST'])
@@ -280,7 +289,7 @@ def purchase_product():
     
     qr_payment = QRService.generate_payment_qr(transaction)
     qr_certificate = QRService.generate_certificate_qr(product, f"tx_{len(blockchain.chain)}")
-    
+    save_data(wallets, products, blockchain)
     return jsonify({
         'success': True,
         'message': f'✅ {transaction["buyer_name"]} a acheté {product.name} pour {product.price} tokens!',
@@ -352,6 +361,8 @@ def mine_block():
     if len(tx_details) > 5:
         tx_summary += f"\n   ... et {len(tx_details)-5} autre(s) transaction(s)"
     
+    save_data(wallets, products, blockchain)
+
     return jsonify({
         'success': True,
         'message': f'⛏️ {miner_name} a miné un bloc !\n\n📦 {tx_count} transaction(s) validée(s):\n{tx_summary}\n\n💰 Récompense: +100 tokens !',
@@ -462,6 +473,14 @@ def get_ratings(product_id):
         'count': len(product_ratings)
     })
 
+@app.route('/api/save', methods=['POST'])
+def manual_save():
+    """Sauvegarde manuelle des données"""
+    if save_data(wallets, products, blockchain):
+        return jsonify({'success': True, 'message': 'Données sauvegardées'})
+    else:
+        return jsonify({'error': 'Erreur lors de la sauvegarde'}), 500
+    
 if __name__ == '__main__':
     print("="*60)
     print("🔐 SERVEUR BLOCKCHAIN AVEC MOTS DE PASSE")
