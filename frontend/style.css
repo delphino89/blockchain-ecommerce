@@ -103,6 +103,31 @@ header {
     transform: translateY(-2px);
 }
 
+.logout-icon {
+    font-size: 1.1rem;
+}
+
+.logout-text {
+    font-weight: 500;
+}
+
+/* Supprimer l'ancien style btn-icon si présent */
+.btn-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
 .container {
     max-width: 1200px;
     margin: 2rem auto;
