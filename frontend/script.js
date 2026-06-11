@@ -133,8 +133,14 @@ async function register() {
     }
 }
 
-// Déconnexion
+// Déconnexion avec confirmation
 function logout() {
+    const confirmation = confirm('Êtes-vous sûr de vouloir vous déconnecter ?');
+    
+    if (!confirmation) {
+        return;
+    }
+    
     localStorage.removeItem('blockchain_wallet');
     localStorage.removeItem('blockchain_name');
     currentWallet = null;
@@ -150,6 +156,9 @@ function logout() {
     document.getElementById('registerName').value = '';
     document.getElementById('registerPassword').value = '';
     document.getElementById('registerConfirmPassword').value = '';
+    
+    // Afficher une notification
+    alert('🔓 Vous avez été déconnecté avec succès.');
 }
 
 // Afficher le modal pour changer le mot de passe
