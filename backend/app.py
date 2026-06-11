@@ -1,7 +1,7 @@
 ﻿"""
 app.py - Serveur Flask principal (Version avec mots de passe)
 """
-from storage import save_data, load_data
+from backend.storage import save_data, load_data
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sys
