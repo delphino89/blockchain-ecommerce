@@ -46,7 +46,7 @@ async function login() {
     }
     
     try {
-        const response = await fetch('http://localhost:5000/api/wallet/login', {
+        const response = await fetch('/api/wallet/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ async function register() {
     }
     
     try {
-        const response = await fetch('http://localhost:5000/api/wallet/register', {
+        const response = await fetch('/api/wallet/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ async function changePassword() {
     }
     
     try {
-        const response = await fetch('http://localhost:5000/api/wallet/change-password', {
+        const response = await fetch('/api/wallet/change-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -243,7 +243,7 @@ async function updateBalance() {
     if (!currentWallet) return;
     
     try {
-        const response = await fetch(`http://localhost:5000/api/balance/${currentWallet}`);
+        const response = await fetch(`/api/balance/${currentWallet}`);
         const data = await response.json();
         document.getElementById('balance').textContent = data.balance;
     } catch (error) {
@@ -254,7 +254,7 @@ async function updateBalance() {
 // Charger les produits
 async function loadProducts() {
     try {
-        const response = await fetch('http://localhost:5000/api/products');
+        const response = await fetch('/api/products');
         const products = await response.json();
         displayProducts(products);
     } catch (error) {
@@ -294,7 +294,7 @@ async function buyProduct(productId) {
     }
     
     // Trouver le produit dans la liste
-    const productsResponse = await fetch('http://localhost:5000/api/products');
+    const productsResponse = await fetch('/api/products');
     const allProducts = await productsResponse.json();
     const product = allProducts.find(p => p.id === productId);
     
@@ -318,7 +318,7 @@ async function buyProduct(productId) {
     }
     
     try {
-        const response = await fetch('http://localhost:5000/api/purchase', {
+        const response = await fetch('/api/purchase', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -368,7 +368,7 @@ async function mineBlock() {
     mineBtn.disabled = true;
     
     try {
-        const response = await fetch('http://localhost:5000/api/mine', {
+        const response = await fetch('/api/mine', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -405,7 +405,7 @@ async function mineBlock() {
 // Mettre à jour les infos blockchain
 async function updateBlockchainInfo() {
     try {
-        const response = await fetch('http://localhost:5000/api/blockchain/info');
+        const response = await fetch('/api/blockchain/info');
         const info = await response.json();
         
         document.getElementById('blockCount').textContent = info.length;
@@ -428,7 +428,7 @@ async function updateBlockchainInfo() {
 // Charger l'historique des transactions
 async function loadTransactions() {
     try {
-        const response = await fetch('http://localhost:5000/api/transactions');
+        const response = await fetch('/api/transactions');
         const transactions = await response.json();
         
         const container = document.getElementById('transactionsList');
@@ -473,7 +473,7 @@ async function loadTransactions() {
 // Charger la liste des utilisateurs
 async function loadUsers() {
     try {
-        const response = await fetch('http://localhost:5000/api/wallet/list');
+        const response = await fetch('/api/wallet/list');
         const users = await response.json();
         
         const container = document.getElementById('usersList');
@@ -517,7 +517,7 @@ async function addProduct(event) {
     }
     
     try {
-        const response = await fetch('http://localhost:5000/api/products', {
+        const response = await fetch('/api/products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
