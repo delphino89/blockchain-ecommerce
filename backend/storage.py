@@ -1,12 +1,14 @@
 """
-storage.py - Gestion de la persistance des données
+storage.py - Gestion de la persistance des données (version GitHub)
 """
 
 import json
 import os
+import base64
 from time import time
 
 DATA_FILE = 'blockchain_data.json'
+BACKUP_FILE = 'blockchain_data_backup.json'
 
 def save_data(wallets, products, blockchain):
     """Sauvegarde toutes les données dans un fichier JSON"""
@@ -18,8 +20,10 @@ def save_data(wallets, products, blockchain):
             'blockchain': {
                 'chain': [],
                 'difficulty': blockchain.difficulty,
-                'mining_reward': blockchain.mining_reward
-            }
+                'mining_reward': blockchain.mining_reward,
+                'pending_transactions': blockchain.pending_transactions
+            },
+            'last_save': time()
         }
         
         # Sauvegarder les produits
@@ -45,7 +49,7 @@ def save_data(wallets, products, blockchain):
             }
             data['blockchain']['chain'].append(block_data)
         
-        # Écrire dans le fichier
+        # Écrire dans le fichier local
         with open(DATA_FILE, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         
@@ -69,7 +73,7 @@ def load_data(wallets, products, blockchain):
         wallets.clear()
         wallets.update(data.get('wallets', {}))
         
-        # Restaurer les produits (nécessite la classe Product)
+        # Restaurer les produits
         from models.product import Product
         products.clear()
         for p_data in data.get('products', []):
@@ -100,8 +104,13 @@ def load_data(wallets, products, blockchain):
         # Restaurer les paramètres
         blockchain.difficulty = data.get('blockchain', {}).get('difficulty', 3)
         blockchain.mining_reward = data.get('blockchain', {}).get('mining_reward', 100)
+        blockchain.pending_transactions = data.get('blockchain', {}).get('pending_transactions', [])
         
+        last_save = data.get('last_save', 0)
         print(f"📀 Données chargées: {len(wallets)} utilisateurs, {len(products)} produits, {len(blockchain.chain)} blocs")
+        if last_save:
+            from datetime import datetime
+            print(f"🕐 Dernière sauvegarde: {datetime.fromtimestamp(last_save).strftime('%Y-%m-%d %H:%M:%S')}")
         return True
     except Exception as e:
         print(f"❌ Erreur chargement: {e}")
