@@ -138,18 +138,37 @@ def login_wallet():
 
 @app.route('/api/wallet/list', methods=['GET'])
 def list_wallets():
-    """Liste tous les wallets (sans les mots de passe)"""
+    """Liste tous les wallets (SANS les soldes pour la confidentialité)"""
     wallet_list = []
     for addr, data in wallets.items():
         wallet_list.append({
             'address': addr,
             'name': data['name'],
-            'balance': blockchain.get_balance(addr),
             'created_at': data['created_at']
+            # NE PAS inclure 'balance' ici
         })
     # Trier par nom
     wallet_list.sort(key=lambda x: x['name'])
     return jsonify(wallet_list)
+
+@app.route('/api/leaderboard', methods=['GET'])
+def get_leaderboard():
+    """Classement anonyme des plus riches"""
+    leaderboard = []
+    for addr, data in wallets.items():
+        balance = blockchain.get_balance(addr)
+        # Anonymiser le nom (ex: "Jean" → "J***")
+        name = data['name']
+        if len(name) > 1:
+            anon_name = name[0] + '*' * (len(name) - 1)
+        else:
+            anon_name = name[0] + '*'
+        leaderboard.append({
+            'name': anon_name,
+            'balance': balance
+        })
+    leaderboard.sort(key=lambda x: x['balance'], reverse=True)
+    return jsonify(leaderboard[:10])
 
 @app.route('/api/wallet/change-password', methods=['POST'])
 def change_password():

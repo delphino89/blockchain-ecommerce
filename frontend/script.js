@@ -243,6 +243,7 @@ async function loadMainApp() {
             updateBlockchainInfo();
             loadUsers();
             updateDashboard();
+            updateDashboard();
         }
     }, 5000);
 }
@@ -480,6 +481,7 @@ async function loadTransactions() {
 }
 
 // Charger la liste des utilisateurs
+// Charger la liste des utilisateurs (sans soldes)
 async function loadUsers() {
     try {
         const response = await fetch('/api/wallet/list');
@@ -492,10 +494,10 @@ async function loadUsers() {
             return;
         }
         
+        // Afficher uniquement les noms, pas les soldes
         container.innerHTML = users.map(user => `
             <div class="user-item">
                 <span class="user-name">👤 ${escapeHtml(user.name)}</span>
-                <span class="user-balance">💰 ${user.balance} tokens</span>
             </div>
         `).join('');
     } catch (error) {
@@ -503,13 +505,14 @@ async function loadUsers() {
     }
 }
 // Mettre à jour le tableau de bord
+// Mettre à jour le tableau de bord (sans soldes visibles)
 async function updateDashboard() {
     try {
         // Récupérer les transactions
         const txResponse = await fetch('/api/transactions');
         const transactions = await txResponse.json();
         
-        // Récupérer les utilisateurs
+        // Récupérer les utilisateurs (juste les noms)
         const usersResponse = await fetch('/api/wallet/list');
         const users = await usersResponse.json();
         
@@ -532,22 +535,13 @@ async function updateDashboard() {
         if (totalProductsElem) totalProductsElem.textContent = products.length;
         if (totalBlocksElem) totalBlocksElem.textContent = blockchain.length;
         
-        // Top 5 des plus riches
-        const topUsers = [...users].sort((a, b) => b.balance - a.balance).slice(0, 5);
+        // Afficher juste le nombre d'utilisateurs dans le top (pas les noms avec soldes)
         const topUsersList = document.getElementById('topUsersList');
-        
         if (topUsersList) {
-            if (topUsers.length === 0) {
+            if (users.length === 0) {
                 topUsersList.innerHTML = '<div class="loading">Aucun utilisateur pour le moment</div>';
             } else {
-                topUsersList.innerHTML = topUsers.map((user, index) => {
-                    let medal = '';
-                    if (index === 0) medal = '🥇 ';
-                    else if (index === 1) medal = '🥈 ';
-                    else if (index === 2) medal = '🥉 ';
-                    else medal = `${index + 1}. `;
-                    return `<div class="user-item"><span>${medal} ${user.name}</span><span class="user-balance">💰 ${user.balance} tokens</span></div>`;
-                }).join('');
+                topUsersList.innerHTML = `<div class="user-item"><span>👥 ${users.length} utilisateurs inscrits</span></div>`;
             }
         }
         
