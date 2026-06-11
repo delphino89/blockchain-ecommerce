@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Blockchain Store - E-commerce Décentralisé</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>🔐 Blockchain Store</h1>
+            <p>E-commerce sécurisé sur blockchain</p>
+        </div>
+        <div class="user-info" id="userInfo" style="display: none;">
+            <div class="user-details">
+                <span class="user-name" id="userName"></span>
+                <span class="user-balance">💰 <span id="balance">0</span> tokens</span>
+            </div>
+            <div class="user-menu">
+                <button id="changePasswordBtn" class="btn-icon" title="Changer le mot de passe">🔑</button>
+                <button id="logoutBtn" class="btn-icon" title="Déconnexion">🚪</button>
+            </div>
+        </div>
+    </header>
+    <!-- Zone de notification -->
+<div id="notificationArea" class="notification-area" style="display: none;">
+    <div class="notification-content">
+        <span id="notificationMessage"></span>
+        <button onclick="closeNotification()" class="notification-close">✖</button>
+    </div>
+</div>
+
+    <main>
+        <div class="container">
+            <!-- Écran de connexion/inscription -->
+            <div id="authScreen" class="auth-card">
+                <h2>🎮 Bienvenue sur Blockchain Store</h2>
+                <p>Créez votre compte sécurisé pour commencer à acheter et vendre !</p>
+                
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="showTab('login')">🔑 Connexion</button>
+                    <button class="tab-btn" onclick="showTab('register')">📝 Inscription</button>
+                </div>
+                
+                <!-- Formulaire de connexion -->
+                <div id="loginTab" class="auth-form">
+                    <h3>Connexion</h3>
+                    <div class="form-group">
+                        <input type="text" id="loginName" placeholder="Votre nom" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" placeholder="Mot de passe" required>
+                    </div>
+                    <button onclick="login()" class="btn-primary">🔑 Se connecter</button>
+                </div>
+                
+                <!-- Formulaire d'inscription -->
+                <div id="registerTab" class="auth-form" style="display: none;">
+                    <h3>Inscription</h3>
+                    <div class="form-group">
+                        <input type="text" id="registerName" placeholder="Choisissez un nom" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="registerPassword" placeholder="Mot de passe (min. 4 caractères)" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="registerConfirmPassword" placeholder="Confirmer le mot de passe" required>
+                    </div>
+                    <button onclick="register()" class="btn-success">📝 Créer mon compte</button>
+                    <p class="info-text">💡 Chaque nouveau compte reçoit <strong>1000 tokens</strong> gratuitement !<br>
+                    🔒 Votre mot de passe est sécurisé (haché SHA-256)</p>
+                </div>
+            </div>
+
+            <!-- Interface principale (cachée au début) -->
+            <div id="mainApp" style="display: none;">
+                <!-- Formulaire d'ajout de produit -->
+                <div class="card">
+                    <h2>📦 Vendre un produit</h2>
+                    <form id="addProductForm">
+                        <div class="form-group">
+                            <input type="text" id="productName" placeholder="Nom du produit" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="productPrice" placeholder="Prix (tokens)" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="productDescription" placeholder="Description du produit" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="productStock" placeholder="Quantité en stock" value="1">
+                        </div>
+                        <button type="submit" class="btn-success">➕ Mettre en vente</button>
+                    </form>
+                </div>
+
+                <!-- Liste des produits -->
+                <div class="card">
+                    <h2>🛍️ Produits disponibles</h2>
+                    <div id="productsList" class="products-grid">
+                        <div class="loading">📦 Chargement des produits...</div>
+                    </div>
+                </div>
+
+                <!-- QR Codes -->
+                <div id="qrSection" class="card" style="display: none;">
+                    <h2>📱 QR Codes de transaction</h2>
+                    <div class="qr-container">
+                        <div class="qr-item">
+                            <h3>💳 Paiement</h3>
+                            <img id="paymentQR" src="" alt="QR Code Paiement">
+                            <p>Scannez pour payer</p>
+                        </div>
+                        <div class="qr-item">
+                            <h3>🏅 Certificat d'authenticité</h3>
+                            <img id="certificateQR" src="" alt="QR Code Certificat">
+                            <p>Preuve d'achat blockchain</p>
+                        </div>
+                    </div>
+                    <button onclick="closeQR()" class="btn-secondary">Fermer</button>
+                </div>
+
+                <!-- Blockchain Info -->
+                <div class="card">
+                    <h2>⛓️ État de la blockchain</h2>
+                    <div id="blockchainInfo" class="info-panel">
+                        <div class="info-row">
+                            <span class="label">📊 Nombre de blocs:</span>
+                            <span id="blockCount">0</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">⏳ Transactions en attente:</span>
+                            <span id="pendingCount">0</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">🔒 Validité:</span>
+                            <span id="validity">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">⚡ Difficulté:</span>
+                            <span id="difficulty">3</span>
+                        </div>
+                    </div>
+                    <button id="mineBtn" class="btn-miner">⛏️ Miner un bloc</button>
+                </div>
+
+                <!-- Historique des transactions -->
+                <div class="card">
+                    <h2>📜 Dernières transactions</h2>
+                    <div id="transactionsList" class="transactions-list">
+                        <div class="loading">Aucune transaction pour le moment</div>
+                    </div>
+                </div>
+
+                <!-- Liste des utilisateurs -->
+                <div class="card">
+                    <h2>👥 Utilisateurs</h2>
+                    <div id="usersList" class="users-list">
+                        <div class="loading">Chargement...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal pour changer le mot de passe -->
+    <div id="passwordModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>🔑 Changer le mot de passe</h3>
+            <div class="form-group">
+                <input type="password" id="oldPassword" placeholder="Ancien mot de passe" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="newPassword" placeholder="Nouveau mot de passe (min. 4 caractères)" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="confirmNewPassword" placeholder="Confirmer le nouveau mot de passe" required>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="changePassword()" class="btn-primary">Changer</button>
+                <button onclick="closePasswordModal()" class="btn-secondary">Annuler</button>
+            </div>
+        </div>
+    </div>
+    <!-- Tableau de bord statistique (version sans graphiques) -->
+<div class="card dashboard-card">
+    <h2>📊 Statistiques</h2>
+    <div class="dashboard-stats">
+        <div class="stat-box">
+            <div class="stat-icon">💰</div>
+            <div class="stat-info">
+                <span class="stat-value" id="totalTransactions">0</span>
+                <span class="stat-label">Transactions</span>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon">👥</div>
+            <div class="stat-info">
+                <span class="stat-value" id="totalUsers">0</span>
+                <span class="stat-label">Utilisateurs</span>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon">📦</div>
+            <div class="stat-info">
+                <span class="stat-value" id="totalProducts">0</span>
+                <span class="stat-label">Produits</span>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon">⛏️</div>
+            <div class="stat-info">
+                <span class="stat-value" id="totalBlocks">0</span>
+                <span class="stat-label">Blocs minés</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Classement des utilisateurs -->
+    <h3>🏆 Top 5 des plus riches</h3>
+    <div id="topUsersList" class="users-list"></div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
