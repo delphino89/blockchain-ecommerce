@@ -1,7 +1,7 @@
 ﻿"""
 app.py - Serveur Flask principal (Version avec mots de passe)
 """
-from backend.storage import save_data, load_data
+from storage import save_data, load_data
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sys
@@ -477,6 +477,13 @@ def manual_save():
         return jsonify({'success': True, 'message': 'Données sauvegardées'})
     else:
         return jsonify({'error': 'Erreur lors de la sauvegarde'}), 500
+    
+@app.route('/api/save', methods=['POST', 'GET'])
+def force_save():
+    """Sauvegarde forcée des données"""
+    if save_data(wallets, products, blockchain):
+        return jsonify({'success': True, 'message': 'Sauvegarde effectuée'})
+    return jsonify({'error': 'Erreur sauvegarde'}), 500
     
 if __name__ == '__main__':
     print("="*60)
