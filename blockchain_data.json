@@ -56,20 +56,35 @@
         "previous_hash": "59c88897a29cd73d18a4f2aa0fde6e4c69a5582a503c298cdbf4afb7ae906a3b",
         "nonce": 11659,
         "hash": "0008488ede0daa73c111ab17e85f9a4c0d875d38894f424b7274f1bee951b77f"
+      },
+      {
+        "index": 2,
+        "transactions": [
+          {
+            "from": "SYSTEM",
+            "to": "wallet_fc0ffc6c",
+            "amount": 1000,
+            "type": "initial_balance",
+            "timestamp": 1781255016.219086,
+            "note": "Bienvenue test ! Voici 1000 tokens pour commencer"
+          },
+          {
+            "from": "SYSTEM",
+            "to": "wallet_fc0ffc6c",
+            "amount": 100,
+            "type": "reward",
+            "timestamp": 1781255039.9337077
+          }
+        ],
+        "timestamp": 1781255039.9337273,
+        "previous_hash": "0008488ede0daa73c111ab17e85f9a4c0d875d38894f424b7274f1bee951b77f",
+        "nonce": 7174,
+        "hash": "00035a23cf62db63724a10abb68c0c389d111dea30ecc446ad0af5d565c761cd"
       }
     ],
     "difficulty": 3,
     "mining_reward": 100,
-    "pending_transactions": [
-      {
-        "from": "SYSTEM",
-        "to": "wallet_fc0ffc6c",
-        "amount": 1000,
-        "type": "initial_balance",
-        "timestamp": 1781255016.219086,
-        "note": "Bienvenue test ! Voici 1000 tokens pour commencer"
-      }
-    ]
+    "pending_transactions": []
   },
-  "last_save": 1781255016.2191422
+  "last_save": 1781255040.3982828
 }
