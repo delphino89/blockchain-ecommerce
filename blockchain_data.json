@@ -93,20 +93,35 @@
         "previous_hash": "0008488ede0daa73c111ab17e85f9a4c0d875d38894f424b7274f1bee951b77f",
         "nonce": 7174,
         "hash": "00035a23cf62db63724a10abb68c0c389d111dea30ecc446ad0af5d565c761cd"
+      },
+      {
+        "index": 3,
+        "transactions": [
+          {
+            "from": "SYSTEM",
+            "to": "wallet_f19e2635",
+            "amount": 1000,
+            "type": "initial_balance",
+            "timestamp": 1781256849.3539414,
+            "note": "Bienvenue BIGIRIMANA ! Voici 1000 tokens pour commencer"
+          },
+          {
+            "from": "SYSTEM",
+            "to": "wallet_f19e2635",
+            "amount": 100,
+            "type": "reward",
+            "timestamp": 1781256887.127388
+          }
+        ],
+        "timestamp": 1781256887.1274102,
+        "previous_hash": "00035a23cf62db63724a10abb68c0c389d111dea30ecc446ad0af5d565c761cd",
+        "nonce": 3019,
+        "hash": "00070ebd36cd695565ba2b11d9fd71b15e685f8c434c94e0d4a90cac33808894"
       }
     ],
     "difficulty": 3,
     "mining_reward": 100,
-    "pending_transactions": [
-      {
-        "from": "SYSTEM",
-        "to": "wallet_f19e2635",
-        "amount": 1000,
-        "type": "initial_balance",
-        "timestamp": 1781256849.3539414,
-        "note": "Bienvenue BIGIRIMANA ! Voici 1000 tokens pour commencer"
-      }
-    ]
+    "pending_transactions": []
   },
-  "last_save": 1781256849.3539739
+  "last_save": 1781256887.4121513
 }
