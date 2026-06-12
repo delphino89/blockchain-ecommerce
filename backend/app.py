@@ -1,7 +1,6 @@
 ﻿"""
 app.py - Serveur Flask principal (Version avec mots de passe)
 """
-from storage import save_data, load_data
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sys
@@ -13,9 +12,10 @@ import hashlib
 # Ajouter le chemin pour les imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from blockchain.blockchain import Blockchain
-from models.product import Product
-from services.qr_service import QRService
+from .storage import save_data, load_data
+from .blockchain.blockchain import Blockchain
+from .models.product import Product
+from .services.qr_service import QRService
 
 # Créer l'application Flask
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
