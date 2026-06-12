@@ -1,0 +1,75 @@
+{
+  "wallets": {
+    "wallet_58da2361": {
+      "name": "Delphin",
+      "password_hash": "e3f6a273415790d52dcd480774bd32ef9bb1a35be41bf54facc3cd3f9d6994a7",
+      "created_at": 1781247358.1183612
+    },
+    "wallet_fc0ffc6c": {
+      "name": "test",
+      "password_hash": "ecd71870d1963316a97e3ac3408c9835ad8cf0f3c1bc703527c30265534f75ae",
+      "created_at": 1781255016.219075
+    }
+  },
+  "products": [
+    {
+      "id": "343c29e0-de8e-432f-a977-5ff8e223599a",
+      "name": "iPhone 15 Pro",
+      "price": 1,
+      "description": "OK",
+      "seller_address": "wallet_58da2361",
+      "stock": 1
+    }
+  ],
+  "blockchain": {
+    "chain": [
+      {
+        "index": 0,
+        "transactions": [
+          "Bloc Genesis - Début de la blockchain"
+        ],
+        "timestamp": 1781247026.747473,
+        "previous_hash": "0",
+        "nonce": 0,
+        "hash": "59c88897a29cd73d18a4f2aa0fde6e4c69a5582a503c298cdbf4afb7ae906a3b"
+      },
+      {
+        "index": 1,
+        "transactions": [
+          {
+            "from": "SYSTEM",
+            "to": "wallet_58da2361",
+            "amount": 1000,
+            "type": "initial_balance",
+            "timestamp": 1781247358.1183639,
+            "note": "Bienvenue Delphin ! Voici 1000 tokens pour commencer"
+          },
+          {
+            "from": "SYSTEM",
+            "to": "wallet_58da2361",
+            "amount": 100,
+            "type": "reward",
+            "timestamp": 1781247358.1187832
+          }
+        ],
+        "timestamp": 1781247358.1189306,
+        "previous_hash": "59c88897a29cd73d18a4f2aa0fde6e4c69a5582a503c298cdbf4afb7ae906a3b",
+        "nonce": 11659,
+        "hash": "0008488ede0daa73c111ab17e85f9a4c0d875d38894f424b7274f1bee951b77f"
+      }
+    ],
+    "difficulty": 3,
+    "mining_reward": 100,
+    "pending_transactions": [
+      {
+        "from": "SYSTEM",
+        "to": "wallet_fc0ffc6c",
+        "amount": 1000,
+        "type": "initial_balance",
+        "timestamp": 1781255016.219086,
+        "note": "Bienvenue test ! Voici 1000 tokens pour commencer"
+      }
+    ]
+  },
+  "last_save": 1781255016.2191422
+}
