@@ -9,6 +9,11 @@
       "name": "test",
       "password_hash": "ecd71870d1963316a97e3ac3408c9835ad8cf0f3c1bc703527c30265534f75ae",
       "created_at": 1781255016.219075
+    },
+    "wallet_f19e2635": {
+      "name": "BIGIRIMANA",
+      "password_hash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+      "created_at": 1781256849.3539367
     }
   },
   "products": [
@@ -92,7 +97,16 @@
     ],
     "difficulty": 3,
     "mining_reward": 100,
-    "pending_transactions": []
+    "pending_transactions": [
+      {
+        "from": "SYSTEM",
+        "to": "wallet_f19e2635",
+        "amount": 1000,
+        "type": "initial_balance",
+        "timestamp": 1781256849.3539414,
+        "note": "Bienvenue BIGIRIMANA ! Voici 1000 tokens pour commencer"
+      }
+    ]
   },
-  "last_save": 1781255122.7057424
+  "last_save": 1781256849.3539739
 }
