@@ -32,6 +32,14 @@
       "description": "GOOD",
       "seller_address": "wallet_fc0ffc6c",
       "stock": 15
+    },
+    {
+      "id": "e122624b-49b8-44f3-b731-1bc924091425",
+      "name": "Keboard",
+      "price": 3,
+      "description": "Bonne qualité ",
+      "seller_address": "wallet_58da2361",
+      "stock": 16
     }
   ],
   "blockchain": {
@@ -123,5 +131,5 @@
     "mining_reward": 100,
     "pending_transactions": []
   },
-  "last_save": 1781256887.4121513
+  "last_save": 1781268219.1814282
 }
