@@ -19,6 +19,14 @@
       "description": "OK",
       "seller_address": "wallet_58da2361",
       "stock": 1
+    },
+    {
+      "id": "87a4c5f7-f364-460d-9ed6-5a4f280c24a0",
+      "name": "Eouteurs",
+      "price": 5,
+      "description": "GOOD",
+      "seller_address": "wallet_fc0ffc6c",
+      "stock": 15
     }
   ],
   "blockchain": {
@@ -86,5 +94,5 @@
     "mining_reward": 100,
     "pending_transactions": []
   },
-  "last_save": 1781255040.3982828
+  "last_save": 1781255122.7057424
 }
